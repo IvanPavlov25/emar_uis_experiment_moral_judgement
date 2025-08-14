@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 import Ably from 'ably';
 
 export function subscribeResults(groupId: string, callback: () => void) {
