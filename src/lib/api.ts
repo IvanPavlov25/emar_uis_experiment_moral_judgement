@@ -1,33 +1,37 @@
 export async function join(faculty: string) {
-  const res = await fetch('/api/join', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ faculty }),
-  });
-  if (!res.ok) throw new Error('Error al unirse');
-  return res.json();
+  const pid = crypto.randomUUID();
+  localStorage.setItem('participant_id', pid);
+  localStorage.setItem('faculty', faculty);
+  localStorage.setItem('status', 'decision');
+  localStorage.setItem('role', 'negotiator1');
+  return { participant_id: pid };
 }
 
 export async function groupStatus(pid: string) {
-  const res = await fetch(`/api/group-status?pid=${encodeURIComponent(pid)}`);
-  if (!res.ok) throw new Error('Error de estado');
-  return res.json();
+  void pid;
+  const status = localStorage.getItem('status') || 'decision';
+  if (status === 'results') {
+    const results = JSON.parse(localStorage.getItem('results') || '{}');
+    const role = localStorage.getItem('role') || 'negotiator1';
+    return { status, results, role };
+  }
+  return { status };
 }
 
 export async function submitDecision(pid: string, choice: string) {
-  const res = await fetch('/api/submit-decision', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ pid, choice }),
-  });
-  if (!res.ok) throw new Error('Error al enviar decisión');
+  void pid;
+  localStorage.setItem('decision', choice);
+  const results = {
+    payoff_n1: 10,
+    payoff_n2: 10,
+    payoff_victim: 5,
+    payoff_observer: 2,
+  };
+  localStorage.setItem('results', JSON.stringify(results));
+  localStorage.setItem('status', 'results');
 }
 
 export async function submitRating(pid: string, rating: number) {
-  const res = await fetch('/api/submit-rating', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ pid, rating }),
-  });
-  if (!res.ok) throw new Error('Error al enviar rating');
+  void pid;
+  localStorage.setItem('rating', rating.toString());
 }
