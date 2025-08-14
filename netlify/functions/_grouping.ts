@@ -23,10 +23,10 @@ function pickTreatment(): string {
 }
 
 export async function attemptGrouping() {
-  const res = await query<Participant>(`SELECT p.id, p.faculty FROM participants p
-    LEFT JOIN members m ON p.id = m.participant_id
-    WHERE m.participant_id IS NULL
-    ORDER BY p.joined_at ASC`);
+    const res = await query<Participant>(`SELECT p.id, p.faculty FROM participants p
+      LEFT JOIN members m ON p.id = m.participant_id
+      WHERE m.participant_id IS NULL
+      ORDER BY p.created_at ASC`);
   const waiting = res.rows;
   while (waiting.length >= 4) {
     const groupId = uuidv4();
