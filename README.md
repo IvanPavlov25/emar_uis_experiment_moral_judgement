@@ -1,43 +1,58 @@
-# EMAR – UIS Experiment: Empatía y Juicio Moral
+# EMAR – UIS | Empatía y Juicio Moral
 
-Proyecto de [oTree](https://www.otree.org/) para el Grupo EMAR – UIS. Implementa un juego económico con roles de negociadores, víctima y observador.
+Aplicación web sin servidor desplegable en Netlify que reproduce el experimento de empatía y juicio moral.
 
-## Instalación
+## Requisitos
 
-1. Crear un entorno virtual de Python 3.10+
-2. Instalar dependencias:
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Ejecutar el servidor de desarrollo:
-   ```bash
-   otree devserver
-   ```
+- Node.js 18+
+- Cuenta de [Netlify](https://www.netlify.com/)
+- Netlify DB habilitada (Postgres serverless)
 
-## Configuración
+## Variables de entorno
 
-Editar `settings.py` para ajustar:
-- `faculties`: lista de facultades disponibles.
-- `treatment_mix`: mezcla de tratamientos (suma 1.0).
-- `decision_timeout`, `rating_timeout` (opcionales, en segundos).
+Configurar en Netlify (y `.env` para desarrollo local):
 
-## Flujo de pantallas
+- `DATABASE_URL`: cadena de conexión a Netlify DB.
+- `SITE_URL`: URL pública del sitio.
+- `HMAC_SECRET`: secreto para firmar IDs.
+- `ADMIN_TOKEN`: token para exportar datos.
+- `ABLY_API_KEY` (opcional): clave para actualizaciones en tiempo real.
 
+## Desarrollo local
+
+```bash
+npm install
+npm run dev
 ```
-Consentimiento y Facultad → Espera de grupo → Decisión de Negociadores → Resultados → Juicio moral (Víctima y Observador) → Fin
+
+## Construir
+
+```bash
+npm run build
 ```
+
+## Estructura
+
+- `src/` frontend React + Tailwind.
+- `netlify/functions/` funciones serverless.
+- `db/schema.sql` definición de la base de datos.
+
+## Netlify DB
+
+1. Crear una base de datos desde el panel de Netlify.
+2. Obtener la variable `DATABASE_URL` y configurarla en el proyecto.
+3. Al ejecutar las funciones se aplicará automáticamente `db/schema.sql` si las tablas no existen.
+
+## Deploy
+
+1. Conecta el repositorio a Netlify.
+2. Define las variables de entorno.
+3. Despliega. El comando de build es `npm run build`.
 
 ## Exportar datos
 
-Usar el panel de administración de oTree para exportar CSV con decisiones, facultad, tratamiento, roles y tiempos.
+Visita `/admin`, ingresa el `ADMIN_TOKEN` y descarga el CSV generado desde `/api/export`.
 
-## Pruebas manuales
+## Licencia
 
-Simular 8–12 participantes con distintas facultades para verificar:
-- Formación correcta de grupos de 4 roles.
-- Etiquetas de facultad visibles u ocultas según el tratamiento.
-- Fallback cuando falta observador neutral (`observer_is_neutral=False`).
-
-## Notas
-
-No se recolecta información personal. Puede retirarse en cualquier momento cerrando la página.
+Uso académico.
