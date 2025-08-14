@@ -1,12 +1,15 @@
-import { Pool } from 'pg';
+import { Pool, QueryResult, QueryResultRow } from 'pg';
 import fs from 'fs';
 import path from 'path';
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 let migrated = false;
 
-export async function query<T = any>(text: string, params?: any[]): Promise<{ rows: T[] }> {
-  return pool.query(text, params);
+export async function query<T extends QueryResultRow = QueryResultRow>(
+  text: string,
+  params?: any[]
+): Promise<QueryResult<T>> {
+  return pool.query<T>(text, params);
 }
 
 export async function ensureMigrations() {
