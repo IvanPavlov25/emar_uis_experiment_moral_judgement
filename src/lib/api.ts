@@ -7,15 +7,27 @@ export async function join(faculty: string) {
   return { participant_id: pid };
 }
 
-export async function groupStatus(pid: string) {
+export type GroupResults = {
+  payoff_n1: number;
+  payoff_n2: number;
+  payoff_victim: number;
+  payoff_observer: number;
+};
+
+export type GroupStatusResponse =
+  | { status: 'results'; results: GroupResults; role: string; group_id?: string }
+  | { status: string; group_id?: string };
+
+export async function groupStatus(pid: string): Promise<GroupStatusResponse> {
   void pid;
   const status = localStorage.getItem('status') || 'decision';
+  const group_id = localStorage.getItem('group_id') || undefined;
   if (status === 'results') {
-    const results = JSON.parse(localStorage.getItem('results') || '{}');
+    const results = JSON.parse(localStorage.getItem('results') || '{}') as GroupResults;
     const role = localStorage.getItem('role') || 'negotiator1';
-    return { status, results, role };
+    return { status: 'results', results, role, group_id };
   }
-  return { status };
+  return { status, group_id };
 }
 
 export async function submitDecision(pid: string, choice: string) {

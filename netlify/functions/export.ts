@@ -19,7 +19,9 @@ const handler: Handler = async (event) => {
   const headers = [
     'participant_id','group_id','role','faculty','treatment','observer_is_neutral','choice','moral_rating','payoff_n1','payoff_n2','payoff_victim','payoff_observer','created_at','group_created_at','decided_at','rated_at','computed_at'
   ];
-  const rows = res.rows.map((r: any) => headers.map(h => r[h] ?? '').join(','));
+  const rows = res.rows.map((r: Record<string, unknown>) =>
+    headers.map(h => String(r[h] ?? '')).join(',')
+  );
   const csv = [headers.join(','), ...rows].join('\n');
   return {
     statusCode: 200,

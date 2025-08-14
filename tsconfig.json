@@ -9,8 +9,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "types": ["node", "react", "react-dom", "vite/client"],
-    "typeRoots": ["./types", "./node_modules/@types"],
     "baseUrl": "."
   },
-  "include": ["src", "netlify/functions"]
+  "include": ["src", "netlify/functions", "types"]
 }
