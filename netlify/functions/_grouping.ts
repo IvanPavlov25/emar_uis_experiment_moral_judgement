@@ -52,7 +52,7 @@ export async function attemptGrouping() {
     }
 
     // victim selection
-    let victimIndex = waiting.findIndex(p =>
+    let victimIndex = waiting.findIndex((p: Participant) =>
       treatment.startsWith('OUTGROUP')
         ? p.faculty !== n1!.faculty
         : p.faculty === n1!.faculty
@@ -61,7 +61,7 @@ export async function attemptGrouping() {
     const victim = take(victimIndex);
 
     // observer selection
-    let observerIndex = waiting.findIndex(p => p.faculty === 'neutral');
+    let observerIndex = waiting.findIndex((p: Participant) => p.faculty === 'neutral');
     let observer_is_neutral = true;
     if (observerIndex === -1) {
       observerIndex = 0;

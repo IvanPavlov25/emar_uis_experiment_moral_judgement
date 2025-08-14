@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { groupStatus } from '../lib/api';
+import { groupStatus, GroupResults } from '../lib/api';
 
 export default function End() {
   const [params] = useSearchParams();
@@ -11,13 +11,14 @@ export default function End() {
     const load = async () => {
       const status = await groupStatus(pid);
       if (status.status === 'results') {
-        const r = status.results;
+        const s = status as { results: GroupResults; role: string };
+        const r = s.results;
         const p =
-          status.role === 'negotiator1'
+          s.role === 'negotiator1'
             ? r.payoff_n1
-            : status.role === 'negotiator2'
+            : s.role === 'negotiator2'
             ? r.payoff_n2
-            : status.role === 'victim'
+            : s.role === 'victim'
             ? r.payoff_victim
             : r.payoff_observer;
         setPayoff(p);

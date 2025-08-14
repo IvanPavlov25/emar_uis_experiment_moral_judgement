@@ -1,24 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { groupStatus } from '../lib/api';
+import { groupStatus, GroupResults } from '../lib/api';
 import { subscribeResults } from '../lib/realtime';
+
+type ResultsData = {
+  status: string;
+  results: GroupResults;
+  role: string;
+  group_id?: string;
+};
 
 export default function Results() {
   const [params] = useSearchParams();
   const pid = params.get('pid') || '';
   const navigate = useNavigate();
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<ResultsData | null>(null);
 
   useEffect(() => {
     let unsub: () => void = () => {};
     const load = async () => {
       const status = await groupStatus(pid);
       if (status.status === 'results') {
-        setData(status);
+        setData(status as ResultsData);
       } else if (status.group_id) {
         unsub = subscribeResults(status.group_id, async () => {
           const s = await groupStatus(pid);
-          if (s.status === 'results') setData(s);
+          if (s.status === 'results') setData(s as ResultsData);
         });
       }
     };
