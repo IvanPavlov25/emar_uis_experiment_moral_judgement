@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { groupStatus, GroupResults } from '../lib/api';
+import { groupStatus, GroupResults, finalizeRecord } from '../lib/api';
 
 export default function End() {
   const [params] = useSearchParams();
@@ -22,6 +22,7 @@ export default function End() {
             ? r.payoff_victim
             : r.payoff_observer;
         setPayoff(p);
+        finalizeRecord();
       }
     };
     load();

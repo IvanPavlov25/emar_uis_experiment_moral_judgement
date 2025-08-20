@@ -5,6 +5,7 @@ import { join } from '../lib/api';
 import { FACULTIES, AcademicUnitRaw } from '../types/models';
 
 interface FormData {
+  student_code: string;
   academic_unit: AcademicUnitRaw | '';
   consent: boolean;
 }
@@ -12,13 +13,18 @@ interface FormData {
 export default function ConsentFaculty() {
   const navigate = useNavigate();
   const { control, handleSubmit, watch } = useForm<FormData>({
-    defaultValues: { academic_unit: '', consent: false },
+    defaultValues: { student_code: '', academic_unit: '', consent: false },
   });
 
   const consent = watch('consent');
+  const academic = watch('academic_unit');
+  const code = watch('student_code');
 
   const onSubmit = async (values: FormData) => {
-    const res = await join(Number(values.academic_unit) as AcademicUnitRaw);
+    const res = await join(
+      Number(values.academic_unit) as AcademicUnitRaw,
+      values.student_code
+    );
     navigate(`/waiting?pid=${encodeURIComponent(res.participant_id)}`);
   };
 
@@ -27,6 +33,17 @@ export default function ConsentFaculty() {
       <p className="text-sm">
         Este estudio es anónimo y con fines académicos. Puedes retirarte en cualquier momento.
       </p>
+      <label className="block">
+        <span className="block mb-1">Código estudiantil</span>
+        <Controller
+          name="student_code"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <input {...field} className="border p-2 w-full" />
+          )}
+        />
+      </label>
       <label className="block">
         <span className="block mb-1">Facultad</span>
         <Controller
@@ -69,7 +86,7 @@ export default function ConsentFaculty() {
       </label>
       <button
       type="submit"
-      disabled={!consent}
+      disabled={!consent || !academic || !code}
       className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
     >
       Continuar
