@@ -61,9 +61,20 @@ export default function Results() {
         <li>Observador: {r.payoff_observer}</li>
       </ul>
       <p>Tu pago: {payoff}</p>
-      <button className="bg-blue-600 text-white px-4 py-2 rounded" onClick={next}>
-        Continuar
-      </button>
+      <div className="space-x-2">
+        <button
+          className="bg-blue-600 text-white px-4 py-2 rounded"
+          onClick={next}
+        >
+          Continuar
+        </button>
+        <button
+          className="bg-gray-500 text-white px-4 py-2 rounded"
+          onClick={() => navigate('/')}
+        >
+          Inicio
+        </button>
+      </div>
     </div>
   );
 }
