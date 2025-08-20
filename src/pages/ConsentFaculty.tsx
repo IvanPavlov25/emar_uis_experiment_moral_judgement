@@ -54,7 +54,16 @@ export default function ConsentFaculty() {
         <Controller
           name="consent"
           control={control}
-          render={({ field }) => <input type="checkbox" {...field} />}
+          render={({ field: { value, onChange, onBlur, name, ref } }) => (
+            <input
+              type="checkbox"
+              checked={value}
+              onChange={onChange}
+              onBlur={onBlur}
+              name={name}
+              ref={ref}
+            />
+          )}
         />
         <span>Acepto participar</span>
       </label>
