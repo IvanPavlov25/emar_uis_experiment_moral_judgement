@@ -7,7 +7,7 @@
     "preview": "vite preview",
     "format": "prettier -w .",
     "lint": "eslint .",
-    "test": "echo \"No tests\""
+    "test": "tsc tests/pairing.test.ts --module commonjs --target es2019 --outDir build-tests --esModuleInterop && node --test build-tests/tests/pairing.test.js"
   },
   "dependencies": {
     "ably": "^1.2.23",
