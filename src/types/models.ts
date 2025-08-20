@@ -1,4 +1,12 @@
 export type AcademicUnitRaw = 0 | 1 | 2 | 3 | 4;
+export const FACULTIES: { value: AcademicUnitRaw; label: string }[] = [
+  { value: 0, label: 'Facultad de Ciencias' },
+  { value: 1, label: 'Facultad de Ciencias Humanas' },
+  { value: 2, label: 'Facultad de Ingenierías Fisicomecánicas' },
+  { value: 3, label: 'Facultad de Ingenierías Fisicoquímicas' },
+  { value: 4, label: 'Facultad de Salud' },
+];
+
 export type ExpAcademicUnit = 1 | 2 | 3; // 1=Humanas, 2=Ingenierías, 3=Otras
 export type Treatment = 'T1' | 'T2' | 'T3' | 'T4' | 'T5';
 export type Decision = 'ACCEPT' | 'REJECT';
@@ -63,8 +71,11 @@ export interface Session {
 }
 
 // Helper for mapping academic_unit to experimental groups
-export function mapAcademicUnit(unit: AcademicUnitRaw): ExpAcademicUnit {
+export function toExpGroup(unit: AcademicUnitRaw): ExpAcademicUnit {
   if (unit === 1) return 1;
   if (unit === 2 || unit === 3) return 2;
   return 3; // Ciencias (0) or Salud (4)
 }
+
+// Backwards compatibility alias
+export const mapAcademicUnit = toExpGroup;

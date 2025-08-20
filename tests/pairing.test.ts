@@ -1,17 +1,17 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { mapAcademicUnit } from '../src/types/models';
+import { toExpGroup } from '../src/types/models';
 import { pairParticipants } from '../src/services/pairing';
 import { db } from '../src/services/db';
 import { v4 as uuidv4 } from 'uuid';
 import type { Participant, Session } from '../src/types/models';
 
 test('map academic unit', () => {
-  assert.equal(mapAcademicUnit(1), 1);
-  assert.equal(mapAcademicUnit(2), 2);
-  assert.equal(mapAcademicUnit(3), 2);
-  assert.equal(mapAcademicUnit(0), 3);
-  assert.equal(mapAcademicUnit(4), 3);
+  assert.equal(toExpGroup(1), 1);
+  assert.equal(toExpGroup(2), 2);
+  assert.equal(toExpGroup(3), 2);
+  assert.equal(toExpGroup(0), 3);
+  assert.equal(toExpGroup(4), 3);
 });
 
 test('pairing produces treatments', async () => {

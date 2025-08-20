@@ -1,7 +1,12 @@
-export async function join(faculty: string) {
+import type { AcademicUnitRaw } from '../types/models';
+import { toExpGroup } from '../types/models';
+
+export async function join(academicUnit: AcademicUnitRaw) {
   const pid = crypto.randomUUID();
   localStorage.setItem('participant_id', pid);
-  localStorage.setItem('faculty', faculty);
+  localStorage.setItem('academic_unit', academicUnit.toString());
+  const exp = toExpGroup(academicUnit);
+  localStorage.setItem('exp_academic_unit', exp.toString());
   localStorage.setItem('status', 'decision');
   localStorage.setItem('role', 'negotiator1');
   return { participant_id: pid };
