@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 import ConsentFaculty from './pages/ConsentFaculty';
 import Waiting from './pages/Waiting';
 import Decision from './pages/Decision';
@@ -13,6 +13,11 @@ export default function App() {
     <div className="max-w-xl mx-auto p-4">
       <header className="text-center mb-4">
         <h1 className="text-xl font-bold">Grupo EMAR – UIS</h1>
+        <div className="mt-2">
+          <Link to="/admin" className="text-sm underline">
+            Admin
+          </Link>
+        </div>
       </header>
       <Routes>
         <Route path="/" element={<ConsentFaculty />} />
